@@ -1,0 +1,223 @@
+{
+  "info": {
+    "name": "SecureOnboard API",
+    "_postman_id": "b8a1f060-6f3b-4c2e-9f7a-3a1f2b6e4c12",
+    "description": "Postman collection for the SecureOnboard demo backend (vulnerable/patched modes).\nSet variable {{baseUrl}} (default http://localhost:4000) and {{xUser}} (format: \"<userId>:<role>\", e.g. \"1:admin\" or \"2:user\") before running requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "xUser",
+      "value": "1:admin",
+      "type": "string"
+    },
+    {
+      "key": "id",
+      "value": "17654",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Health check endpoint"
+      }
+    },
+    {
+      "name": "Mode",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/mode",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "mode"
+          ]
+        },
+        "description": "Returns current server mode (vulnerable or patched)"
+      }
+    },
+    {
+      "name": "List Profiles (public)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/profiles",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "profiles"
+          ]
+        },
+        "description": "List all profiles (public fields only)"
+      }
+    },
+    {
+      "name": "Get Profile (public)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/profiles/{{id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "profiles",
+            "{{id}}"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "17654"
+            }
+          ]
+        },
+        "description": "Get a single profile (public fields). Replace {{id}} with desired user ID."
+      }
+    },
+    {
+      "name": "Get Full Profile (sensitive + admin)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-user",
+            "value": "{{xUser}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/profiles/{{id}}/full",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "profiles",
+            "{{id}}",
+            "full"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "17654"
+            }
+          ]
+        },
+        "description": "Returns the full profile including sensitive and admin fields. In patched mode this requires either owner or admin; in vulnerable mode no check is enforced. Set header x-user to emulate a requester. Format: <userId>:<role> (role = admin|user)"
+      }
+    },
+    {
+      "name": "Approve Onboarding (admin only)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "x-user",
+            "value": "{{xUser}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"approve\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/profiles/{{id}}/approve",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "profiles",
+            "{{id}}",
+            "approve"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "17656"
+            }
+          ]
+        },
+        "description": "Approve an onboarding request. Patched mode requires admin role (x-user header). Vulnerable mode may allow anyone."
+      }
+    },
+    {
+      "name": "Offboard Employee (admin only)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "x-user",
+            "value": "{{xUser}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"offboard\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/profiles/{{id}}/offboard",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "profiles",
+            "{{id}}",
+            "offboard"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "17657"
+            }
+          ]
+        },
+        "description": "Offboard an employee. Patched mode requires admin role (x-user header)."
+      }
+    }
+  ]
+}

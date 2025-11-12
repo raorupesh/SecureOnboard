@@ -11,10 +11,13 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     setError('');
 
-    // Demo credentials
+    // Demo credentials (accept short usernames 'alice' and 'bob' to match docs)
     const credentials = {
+      'alice': { password: 'Manager@123', userId: '1', role: 'admin', firstName: 'Alice', lastName: 'Johnson' },
+      'bob': { password: 'User@123', userId: '2', role: 'user', firstName: 'Bob', lastName: 'Miller' },
+      // keep legacy keys for compatibility
       'alice_2025': { password: 'Manager@123', userId: '1', role: 'admin', firstName: 'Alice', lastName: 'Johnson' },
-      'bob_2166': { password: 'User@123', userId: '2', role: 'user', firstName: 'Bob', lastName: 'Miller' }
+      'bob_2025': { password: 'User@123', userId: '2', role: 'user', firstName: 'Bob', lastName: 'Miller' }
     };
 
     const user = credentials[username.toLowerCase().trim()];

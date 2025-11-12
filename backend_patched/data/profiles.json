@@ -54,7 +54,7 @@
     "ownerId": "3",
     "firstName": "Carol",
     "lastName": "Davis",
-    "status": "Onboarded",
+    "status": "In Progress",
     "publicFields": {
       "title": "Designer",
       "department": "Marketing"
@@ -66,9 +66,9 @@
     },
     "admin": {
       "internalNotes": "Pending background check",
-      "approved": true,
-      "approvedBy": "System",
-      "approvedAt": "2025-11-12"
+      "approved": false,
+      "approvedBy": null,
+      "approvedAt": null
     }
   },
   {

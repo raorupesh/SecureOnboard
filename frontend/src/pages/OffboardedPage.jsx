@@ -17,6 +17,16 @@ export default function OffboardedPage({ currentUser }) {
       .catch(() => setLoading(false));
   }, []);
 
+  async function handleOnboard(id) {
+    const r = await fetch(`${API_BASE}/profiles/${id}/onboard`, {
+      method: 'PATCH',
+      headers: { 'x-user': currentUser.apiHeader }
+    });
+    if (r.ok) {
+      setProfiles(prev => prev.filter(p => p.id !== id));
+    }
+  }
+
   if (loading) return <div className="main-content">Loading...</div>;
 
   return (
@@ -53,7 +63,11 @@ export default function OffboardedPage({ currentUser }) {
                     <td>{p.publicFields?.department || 'N/A'}</td>
                     <td><StatusBadge status={p.status} /></td>
                     <td>
-                      —
+                      <div className="actions">
+                        <button className="btn btn-success" onClick={() => handleOnboard(p.id)}>
+                          Onboard
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

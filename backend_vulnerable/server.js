@@ -186,6 +186,26 @@ app.patch('/profiles/:id/offboard', (req, res) => {
   res.json({ success: true, profile });
 });
 
+// Re-onboard profile (vulnerable)
+app.patch('/profiles/:id/onboard', (req, res) => {
+  const profile = findById(req.params.id);
+  if (!profile) return res.status(404).json({ error: 'Not found' });
+
+  const prevStatus = profile.status;
+  profile.status = 'Onboarded';
+  if (profile.admin) {
+    profile.admin.approved = true;
+    profile.admin.approvedBy = 'System';
+    profile.admin.approvedAt = new Date().toISOString().split('T')[0];
+  }
+  saveProfiles();
+
+  const possibleRequester = parseRequester(req.headers['x-user']);
+  db.logAction({ eventType: 'onboard', actorId: possibleRequester ? possibleRequester.id : null, actorRole: possibleRequester ? possibleRequester.role : null, targetProfileId: profile.id, details: { prevStatus } }).catch(() => {});
+
+  res.json({ success: true, profile });
+});
+
 app.listen(PORT, () => {
   console.log(`\nSecureOnboard VULNERABLE Backend running on port ${PORT}`);
   console.log(`Mode: ${MODE.toUpperCase()}`);

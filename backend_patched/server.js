@@ -232,6 +232,36 @@ app.patch('/profiles/:id/offboard', (req, res) => {
   res.json({ success: true, profile });
 });
 
+// Re-onboard profile (patched: admin only)
+app.patch('/profiles/:id/onboard', (req, res) => {
+  const profile = findById(req.params.id);
+  if (!profile) return res.status(404).json({ error: 'Not found' });
+
+  const requester = parseRequester(req.headers['x-user']);
+  if (!requester) {
+    db.logAction({ eventType: 'onboard_denied', actorId: null, actorRole: null, targetProfileId: profile.id, details: { reason: 'unauthorized' } }).catch(() => {});
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  if (requester.role !== 'admin') {
+    db.logAction({ eventType: 'onboard_denied', actorId: requester.id, actorRole: requester.role, targetProfileId: profile.id, details: { reason: 'forbidden' } }).catch(() => {});
+    return res.status(403).json({ error: 'Forbidden: Admin access required' });
+  }
+
+  const prevStatus = profile.status;
+  profile.status = 'Onboarded';
+  if (profile.admin) {
+    profile.admin.approved = true;
+    profile.admin.approvedBy = 'System';
+    profile.admin.approvedAt = new Date().toISOString().split('T')[0];
+  }
+  saveProfiles();
+
+  db.logAction({ eventType: 'onboard', actorId: requester.id, actorRole: requester.role, targetProfileId: profile.id, details: { prevStatus } }).catch(() => {});
+
+  res.json({ success: true, profile });
+});
+
 app.listen(PORT, () => {
   console.log(`\nSecureOnboard PATCHED Backend running on port ${PORT}`);
   console.log(`Mode: ${MODE.toUpperCase()}`);

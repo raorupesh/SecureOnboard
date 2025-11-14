@@ -23,14 +23,18 @@ export default function Login({ onLogin }) {
     const user = credentials[username.toLowerCase().trim()];
     
     if (user && user.password === password) {
-      onLogin({
+      const loggedIn = {
         id: user.userId,
         role: user.role,
         apiHeader: `${user.userId}:${user.role}`,
         firstName: user.firstName,
         lastName: user.lastName,
         username
-      });
+      };
+      // Persist session for 1 hour (handled in App as well). Keeping here for immediate durability.
+      const session = { user: loggedIn, expiresAt: Date.now() + 60 * 60 * 1000 };
+      try { localStorage.setItem('so_session', JSON.stringify(session)); } catch(_) {}
+      onLogin(loggedIn);
     } else {
       setError('Invalid username or password');
     }

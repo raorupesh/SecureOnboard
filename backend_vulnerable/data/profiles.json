@@ -30,7 +30,7 @@
     "ownerId": "2",
     "firstName": "Bob",
     "lastName": "Miller",
-    "status": "Onboarded",
+    "status": "Offboarded",
     "publicFields": {
       "title": "Developer",
       "department": "Engineering"
@@ -54,7 +54,7 @@
     "ownerId": "3",
     "firstName": "Carol",
     "lastName": "Davis",
-    "status": "In Progress",
+    "status": "Onboarded",
     "publicFields": {
       "title": "Designer",
       "department": "Marketing"
@@ -66,9 +66,9 @@
     },
     "admin": {
       "internalNotes": "Pending background check",
-      "approved": false,
-      "approvedBy": null,
-      "approvedAt": null
+      "approved": true,
+      "approvedBy": "System",
+      "approvedAt": "2025-11-14"
     }
   },
   {

@@ -219,5 +219,51 @@
         "description": "Offboard an employee. Patched mode requires admin role (x-user header)."
       }
     }
+    ,
+    {
+      "name": "Onboard Employee (admin only)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "x-user",
+            "value": "{{xUser}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"onboard\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/profiles/{{id}}/onboard",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "profiles",
+            "{{id}}",
+            "onboard"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "17660"
+            }
+          ]
+        },
+        "description": "Re-onboard an offboarded employee. Patched mode requires admin role (x-user header). Vulnerable mode allows anyone."
+      }
+    }
   ]
 }

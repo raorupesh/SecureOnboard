@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { API_BASE } from '../lib/api';
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -11,12 +10,10 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     setError('');
 
-    // Demo credentials (accept short usernames 'alice' and 'bob' to match docs)
-    // Map to REAL dataset with separate ownerId (auth id) and profileId
+    // Map dataset with separate ownerId (auth id) and profileId
     const credentials = {
       'alice': { password: 'Manager@123', ownerId: '1', profileId: '17654', role: 'admin', firstName: 'Alice', lastName: 'Johnson' },
       'bob': { password: 'User@123', ownerId: '2', profileId: '17655', role: 'user', firstName: 'Bob', lastName: 'Miller' },
-      // keep legacy keys for compatibility
       'alice_2025': { password: 'Manager@123', ownerId: '1', profileId: '17654', role: 'admin', firstName: 'Alice', lastName: 'Johnson' },
       'bob_2025': { password: 'User@123', ownerId: '2', profileId: '17655', role: 'user', firstName: 'Bob', lastName: 'Miller' }
     };
@@ -33,9 +30,8 @@ export default function Login({ onLogin }) {
         lastName: user.lastName,
         username
       };
-      // Persist session for 1 hour (handled in App as well). Keeping here for immediate durability.
       const session = { user: loggedIn, expiresAt: Date.now() + 60 * 60 * 1000 };
-      try { localStorage.setItem('so_session', JSON.stringify(session)); } catch(_) {}
+      try { localStorage.setItem('so_session_patched', JSON.stringify(session)); } catch(_) {}
       onLogin(loggedIn);
     } else {
       setError('Invalid username or password');
@@ -46,8 +42,8 @@ export default function Login({ onLogin }) {
     <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <h1>SecureOnboard</h1>
-          <p>Broken Access Control Demo</p>
+          <h1>SecureOnboard (Patched)</h1>
+          <p>Broken Access Control — Secure Mode</p>
         </div>
 
         <form className="form" onSubmit={handleSubmit} noValidate>

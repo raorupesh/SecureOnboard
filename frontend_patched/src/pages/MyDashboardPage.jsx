@@ -10,27 +10,23 @@ export default function MyDashboardPage({ currentUser }) {
   useEffect(() => {
     setLoading(true);
     setError('');
-    // Try patched endpoint first; fallback to vulnerable public profile endpoint
     fetch(`${API_BASE}/profiles/self`, { headers: { 'x-user': currentUser.apiHeader } })
       .then(async r => {
-        if (r.ok) return r.json();
-        // Fallback: try public profile by ID (vulnerable backend may not have /profiles/self)
-        const r2 = await fetch(`${API_BASE}/profiles/${currentUser.profileId}`);
-        if (!r2.ok) {
-          const t = await r.text().catch(() => '');
+        if (!r.ok) {
+          const t = await r.text();
           throw new Error(t || `HTTP ${r.status}`);
         }
-        return r2.json();
+        return r.json();
       })
       .then(data => {
         setProfile(data);
         setLoading(false);
       })
-      .catch(() => {
+      .catch(e => {
         setError('Failed to load your profile');
         setLoading(false);
       });
-  }, [currentUser.apiHeader, currentUser.profileId]);
+  }, [currentUser.apiHeader]);
 
   if (loading) return <div className="main-content">Loading...</div>;
 

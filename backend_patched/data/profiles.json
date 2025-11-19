@@ -30,7 +30,7 @@
     "ownerId": "2",
     "firstName": "Bob",
     "lastName": "Miller",
-    "status": "Onboarded",
+    "status": "Offboarded",
     "publicFields": {
       "title": "Developer",
       "department": "Engineering"
@@ -54,7 +54,7 @@
     "ownerId": "3",
     "firstName": "Carol",
     "lastName": "Davis",
-    "status": "In Progress",
+    "status": "Rejected",
     "publicFields": {
       "title": "Designer",
       "department": "Marketing"
@@ -91,8 +91,8 @@
     "admin": {
       "internalNotes": "Resigned - Good standing",
       "approved": true,
-      "approvedBy": "Alice Johnson",
-      "approvedAt": "2023-12-20"
+      "approvedBy": "System",
+      "approvedAt": "2025-11-18"
     }
   },
   {

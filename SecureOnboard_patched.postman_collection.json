@@ -1,0 +1,112 @@
+{
+  "info": {
+    "name": "SecureOnboard API - Patched",
+    "_postman_id": "a3acb8a1-1b78-4f07-9a9f-0d6a4a2b5e77",
+    "description": "Patched backend on port 4001. Bob (2:user) is restricted to My Dashboard (self). Admin actions require 1:admin and trusted client (Origin).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4001", "type": "string" },
+    { "key": "xUser",   "value": "2:user",              "type": "string" },
+    { "key": "adminUser", "value": "1:admin",           "type": "string" },
+    { "key": "idInProgress", "value": "17656",          "type": "string" },
+    { "key": "idOnboarded",  "value": "17659",          "type": "string" },
+    { "key": "idAlice",      "value": "17654",          "type": "string" },
+    { "key": "frontendOrigin", "value": "http://localhost:5174", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] } }
+    },
+    {
+      "name": "Mode",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/mode", "host": ["{{baseUrl}}"], "path": ["mode"] } }
+    },
+    {
+      "name": "My Dashboard (Bob) — Self",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-user", "value": "{{xUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/self", "host": ["{{baseUrl}}"], "path": ["profiles","self"] }
+      }
+    },
+    {
+      "name": "List Profiles (public fields) — from trusted Origin",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" } ],
+        "url": { "raw": "{{baseUrl}}/profiles", "host": ["{{baseUrl}}"], "path": ["profiles"] }
+      }
+    },
+    {
+      "name": "View Full (Alice) — Bob should be 403",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-user", "value": "{{xUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idAlice}}/full", "host": ["{{baseUrl}}"], "path": ["profiles","{{idAlice}}","full"] }
+      }
+    },
+    {
+      "name": "Approve In-Progress — Bob should be 403",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "x-user", "value": "{{xUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idInProgress}}/approve", "host": ["{{baseUrl}}"], "path": ["profiles","{{idInProgress}}","approve"] }
+      }
+    },
+    {
+      "name": "Reject In-Progress — Bob should be 403",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "x-user", "value": "{{xUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idInProgress}}/reject", "host": ["{{baseUrl}}"], "path": ["profiles","{{idInProgress}}","reject"] }
+      }
+    },
+    {
+      "name": "Offboard Onboarded — Bob should be 403",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "x-user", "value": "{{xUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idOnboarded}}/offboard", "host": ["{{baseUrl}}"], "path": ["profiles","{{idOnboarded}}","offboard"] }
+      }
+    },
+    {
+      "name": "Re-Onboard — Bob should be 403",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "x-user", "value": "{{xUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idOnboarded}}/onboard", "host": ["{{baseUrl}}"], "path": ["profiles","{{idOnboarded}}","onboard"] }
+      }
+    },
+    {
+      "name": "Approve (Admin) — should succeed",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "x-user", "value": "{{adminUser}}", "type": "text" },
+          { "key": "Origin", "value": "{{frontendOrigin}}", "type": "text" }
+        ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idInProgress}}/approve", "host": ["{{baseUrl}}"], "path": ["profiles","{{idInProgress}}","approve"] }
+      }
+    }
+  ]
+}

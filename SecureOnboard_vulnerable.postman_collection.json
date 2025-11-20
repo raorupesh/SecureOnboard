@@ -1,0 +1,75 @@
+{
+  "info": {
+    "name": "SecureOnboard API - Vulnerable",
+    "_postman_id": "d6f6a2a2-6e4a-4f1c-9c44-9f7c2b1e3a11",
+    "description": "Vulnerable backend on port 4000. Bob (2:user) can approve/reject/offboard due to broken function-level authorization.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000", "type": "string" },
+    { "key": "xUser",   "value": "2:user",              "type": "string" },
+    { "key": "adminUser", "value": "1:admin",           "type": "string" },
+    { "key": "idInProgress", "value": "17656",          "type": "string" },
+    { "key": "idOnboarded",  "value": "17659",          "type": "string" },
+    { "key": "idAlice",      "value": "17654",          "type": "string" },
+    { "key": "idBob",        "value": "17655",          "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] } }
+    },
+    {
+      "name": "Mode",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/mode", "host": ["{{baseUrl}}"], "path": ["mode"] } }
+    },
+    {
+      "name": "List Profiles (public)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/profiles", "host": ["{{baseUrl}}"], "path": ["profiles"] } }
+    },
+    {
+      "name": "Get Profile (public)",
+      "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/profiles/{{idBob}}", "host": ["{{baseUrl}}"], "path": ["profiles","{{idBob}}"] } }
+    },
+    {
+      "name": "View Full (Alice) — Bob succeeds (IDOR)",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "x-user", "value": "{{xUser}}", "type": "text" } ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idAlice}}/full", "host": ["{{baseUrl}}"], "path": ["profiles","{{idAlice}}","full"] }
+      }
+    },
+    {
+      "name": "Approve In-Progress (Bob succeeds)",
+      "request": {
+        "method": "PATCH",
+        "header": [ { "key": "x-user", "value": "{{xUser}}", "type": "text" } ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idInProgress}}/approve", "host": ["{{baseUrl}}"], "path": ["profiles","{{idInProgress}}","approve"] }
+      }
+    },
+    {
+      "name": "Reject In-Progress (Bob succeeds)",
+      "request": {
+        "method": "PATCH",
+        "header": [ { "key": "x-user", "value": "{{xUser}}", "type": "text" } ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idInProgress}}/reject", "host": ["{{baseUrl}}"], "path": ["profiles","{{idInProgress}}","reject"] }
+      }
+    },
+    {
+      "name": "Offboard Onboarded (Bob succeeds)",
+      "request": {
+        "method": "PATCH",
+        "header": [ { "key": "x-user", "value": "{{xUser}}", "type": "text" } ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idOnboarded}}/offboard", "host": ["{{baseUrl}}"], "path": ["profiles","{{idOnboarded}}","offboard"] }
+      }
+    },
+    {
+      "name": "Re-Onboard (Bob succeeds)",
+      "request": {
+        "method": "PATCH",
+        "header": [ { "key": "x-user", "value": "{{xUser}}", "type": "text" } ],
+        "url": { "raw": "{{baseUrl}}/profiles/{{idOnboarded}}/onboard", "host": ["{{baseUrl}}"], "path": ["profiles","{{idOnboarded}}","onboard"] }
+      }
+    }
+  ]
+}

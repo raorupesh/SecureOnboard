@@ -30,7 +30,7 @@
     "ownerId": "2",
     "firstName": "Bob",
     "lastName": "Miller",
-    "status": "Offboarded",
+    "status": "Onboarded",
     "publicFields": {
       "title": "Developer",
       "department": "Engineering"
@@ -43,8 +43,8 @@
     "admin": {
       "internalNotes": "Good team player",
       "approved": true,
-      "approvedBy": "Alice Johnson",
-      "approvedAt": "2024-02-10"
+      "approvedBy": "System",
+      "approvedAt": "2025-11-20"
     }
   },
   {
@@ -54,7 +54,7 @@
     "ownerId": "3",
     "firstName": "Carol",
     "lastName": "Davis",
-    "status": "In Progress",
+    "status": "Offboarded",
     "publicFields": {
       "title": "Designer",
       "department": "Marketing"
@@ -66,9 +66,9 @@
     },
     "admin": {
       "internalNotes": "Pending background check",
-      "approved": false,
-      "approvedBy": null,
-      "approvedAt": null
+      "approved": true,
+      "approvedBy": "System",
+      "approvedAt": "2025-11-19"
     }
   },
   {
@@ -78,7 +78,7 @@
     "ownerId": "4",
     "firstName": "David",
     "lastName": "Evans",
-    "status": "Offboarded",
+    "status": "Onboarded",
     "publicFields": {
       "title": "Sales Rep",
       "department": "Sales"
@@ -92,7 +92,7 @@
       "internalNotes": "Resigned - Good standing",
       "approved": true,
       "approvedBy": "System",
-      "approvedAt": "2025-11-18"
+      "approvedAt": "2025-11-20"
     }
   },
   {
@@ -102,7 +102,7 @@
     "ownerId": "5",
     "firstName": "Eve",
     "lastName": "Wilson",
-    "status": "In Progress",
+    "status": "Rejected",
     "publicFields": {
       "title": "Analyst",
       "department": "Finance"
@@ -114,9 +114,9 @@
     },
     "admin": {
       "internalNotes": "Awaiting equipment setup",
-      "approved": false,
-      "approvedBy": null,
-      "approvedAt": null
+      "approved": true,
+      "approvedBy": "System",
+      "approvedAt": "2025-11-20"
     }
   },
   {
@@ -126,7 +126,7 @@
     "ownerId": "6",
     "firstName": "Frank",
     "lastName": "Taylor",
-    "status": "Onboarded",
+    "status": "In Progress",
     "publicFields": {
       "title": "Product Manager",
       "department": "Product"

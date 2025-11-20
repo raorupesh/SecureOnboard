@@ -30,7 +30,7 @@
     "ownerId": "2",
     "firstName": "Bob",
     "lastName": "Miller",
-    "status": "Offboarded",
+    "status": "Onboarded",
     "publicFields": {
       "title": "Developer",
       "department": "Engineering"

@@ -126,7 +126,7 @@
     "ownerId": "6",
     "firstName": "Frank",
     "lastName": "Taylor",
-    "status": "In Progress",
+    "status": "Offboarded",
     "publicFields": {
       "title": "Product Manager",
       "department": "Product"
@@ -138,7 +138,7 @@
     },
     "admin": {
       "internalNotes": "High performer, fast onboarding",
-      "approved": true,
+      "approved": false,
       "approvedBy": "Alice Johnson",
       "approvedAt": "2024-03-05"
     }
